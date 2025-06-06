@@ -132,7 +132,7 @@ waypoint-7d4fdb5b7c-rlq57   1/1     Running   0          63s
 
 ## Another checkpoint
 
-Now that we have a waypoint frontend `httpbin`, let's test rate-limiting again:
+Now that we have a waypoint fronting `httpbin`, let's test rate-limiting again:
 
 ```shell
 for i in {1..5}; do kubectl exec -n httpbin deploy/curl -- curl -s --head httpbin:8000/json; done
@@ -148,7 +148,7 @@ Thankfully, solo.io provides builds of Istio that do.
 
 The ambientmesh.io documentation provides the instructions for [using Solo's builds](https://ambientmesh.io/docs/operations/solo-builds/).
 
-Upgrade Istio by overriding the HUB and TAG environment variables that tell Istio to fetch images from a different location.  The TAG variable specifies the version to use:
+Upgrade Istio by overriding the `hub` and `tag` configuration options.  `hub` tells the Istio CLI to fetch images from a different location, while the `tag` option specifies the version to use:
 
 ```shell
 istioctl install --set profile=ambient --set values.global.platform=k3d --skip-confirmation \
@@ -174,4 +174,21 @@ Re-run the test command:
 
 ```shell
 for i in {1..5}; do kubectl exec -n httpbin deploy/curl -- curl -s --head httpbin:8000/json; done
+```
+
+## Retrofit the EnvoyFilter spec
+
+In sidecar mode the EnvoyFilter targeted the service via the `workloadSelector` field.
+In ambient mode, the EnvoyFilter must reference the waypoint via the `targetRefs` field.
+
+Here is a revised envoy filter for ambient:
+
+```yaml title="envoyfilter-ambient.yaml" linenums="1" hl_lines="7-9"
+--8<-- "envoyfilter-ambient.yaml"
+```
+
+Apply the updated EnvoyFilter:
+
+```shell
+kubectl apply -n httpbin -f artifacts/envoyfilter-ambient.yaml
 ```
