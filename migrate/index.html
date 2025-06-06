@@ -777,13 +777,13 @@ In ambient mode, the EnvoyFilter must reference the waypoint via the <code>targe
 <h2 id="re-test">Re-test</h2>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>..5<span class="o">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-n<span class="w"> </span>httpbin<span class="w"> </span>deploy/curl<span class="w"> </span>--<span class="w"> </span>curl<span class="w"> </span>-s<span class="w"> </span>--head<span class="w"> </span>httpbin:8000/json<span class="p">;</span><span class="w"> </span><span class="k">done</span>
 </span></code></pre></div>
-<p>You will see four HTTP 200 responses, while the fifth request returned:</p>
+<p>You will see four HTTP 200 responses, while the fifth request returns:</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="go">command terminated with exit code 56</span>
 </span></code></pre></div>
 <p>Inspect the ztunnel logs:</p>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>istio-system<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>ztunnel
 </span></code></pre></div>
-<p>The last line should indicate that the request was rate-limited:</p>
+<p>The last line in the logs should indicate that the request was rate-limited:</p>
 <div class="language-console highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-27-1">1</a></span>
 <span class="normal"><a href="#__codelineno-27-2">2</a></span>
 <span class="normal"><a href="#__codelineno-27-3">3</a></span>
@@ -791,14 +791,14 @@ In ambient mode, the EnvoyFilter must reference the waypoint via the <code>targe
 <span class="normal"><a href="#__codelineno-27-5">5</a></span>
 <span class="normal"><a href="#__codelineno-27-6">6</a></span>
 <span class="normal"><a href="#__codelineno-27-7">7</a></span>
-<span class="normal"><a href="#__codelineno-27-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1"></a><span class="go">2025-06-06T05:48:08.499364Z     error   access  connection complete     </span>
-</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2"></a><span class="go">src.addr=10.42.0.14:52486 src.workload=&quot;curl-5d7946555f-ts24c&quot; </span>
-</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3"></a><span class="go">src.namespace=&quot;httpbin&quot; src.identity=&quot;spiffe://cluster.local/ns/httpbin/sa/curl&quot; </span>
-</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4"></a><span class="go">dst.addr=10.42.0.18:15008 dst.hbone_addr=10.43.9.128:8000 </span>
-</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5"></a><span class="go">dst.service=&quot;httpbin.httpbin.svc.cluster.local&quot; dst.workload=&quot;waypoint-66465f7777-d5xwd&quot; </span>
-</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6"></a><span class="go">dst.namespace=&quot;httpbin&quot; dst.identity=&quot;spiffe://cluster.local/ns/httpbin/sa/waypoint&quot; </span>
-</span><span id="__span-27-7"><a id="__codelineno-27-7" name="__codelineno-27-7"></a><span class="go">direction=&quot;outbound&quot; bytes_sent=0 bytes_recv=0 duration=&quot;0ms&quot;</span>
-</span><span id="__span-27-8"><a id="__codelineno-27-8" name="__codelineno-27-8"></a><span class="hll"><span class="go">error=&quot;http status: 429 Too Many Requests&quot;</span>
+<span class="normal"><a href="#__codelineno-27-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1"></a><span class="go">2025-06-06T05:48:08.499364Z     error   access  connection complete</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2"></a><span class="go">  src.addr=10.42.0.14:52486 src.workload=&quot;curl-5d7946555f-ts24c&quot;</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3"></a><span class="go">  src.namespace=&quot;httpbin&quot; src.identity=&quot;spiffe://cluster.local/ns/httpbin/sa/curl&quot;</span>
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4"></a><span class="go">  dst.addr=10.42.0.18:15008 dst.hbone_addr=10.43.9.128:8000</span>
+</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5"></a><span class="go">  dst.service=&quot;httpbin.httpbin.svc.cluster.local&quot; dst.workload=&quot;waypoint-66465f7777-d5xwd&quot;</span>
+</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6"></a><span class="go">  dst.namespace=&quot;httpbin&quot; dst.identity=&quot;spiffe://cluster.local/ns/httpbin/sa/waypoint&quot;</span>
+</span><span id="__span-27-7"><a id="__codelineno-27-7" name="__codelineno-27-7"></a><span class="go">  direction=&quot;outbound&quot; bytes_sent=0 bytes_recv=0 duration=&quot;0ms&quot;</span>
+</span><span id="__span-27-8"><a id="__codelineno-27-8" name="__codelineno-27-8"></a><span class="hll"><span class="go">  error=&quot;http status: 429 Too Many Requests&quot;</span>
 </span></span></code></pre></div></td></tr></table></div>
 
 
