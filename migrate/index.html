@@ -679,7 +679,7 @@
 We need to apply one final change.</p>
 <h2 id="retrofit-the-envoyfilter-spec">Retrofit the EnvoyFilter spec</h2>
 <p>In sidecar mode the EnvoyFilter targeted the service via the <code>workloadSelector</code> field.
-In ambient mode, the EnvoyFilter must reference the waypoint via the <code>targetRefs</code> field.</p>
+In ambient mode, the EnvoyFilter must reference the service with the <code>targetRefs</code> field.</p>
 <p>Here is a revised envoy filter for ambient:</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">envoyfilter-ambient.yaml</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-22-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-22-2"> 2</a></span>
