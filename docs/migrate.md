@@ -202,7 +202,7 @@ kubectl apply -n httpbin -f artifacts/envoyfilter-ambient.yaml
 for i in {1..5}; do kubectl exec -n httpbin deploy/curl -- curl -s --head httpbin:8000/json; done
 ```
 
-You will see four HTTP 200 responses, while the fifth request returned:
+You will see four HTTP 200 responses, while the fifth request returns:
 
 ```console
 command terminated with exit code 56
@@ -214,15 +214,15 @@ Inspect the ztunnel logs:
 kubectl logs -n istio-system -l app=ztunnel
 ```
 
-The last line should indicate that the request was rate-limited:
+The last line in the logs should indicate that the request was rate-limited:
 
 ```console linenums="1" hl_lines="8"
-2025-06-06T05:48:08.499364Z     error   access  connection complete     
-src.addr=10.42.0.14:52486 src.workload="curl-5d7946555f-ts24c" 
-src.namespace="httpbin" src.identity="spiffe://cluster.local/ns/httpbin/sa/curl" 
-dst.addr=10.42.0.18:15008 dst.hbone_addr=10.43.9.128:8000 
-dst.service="httpbin.httpbin.svc.cluster.local" dst.workload="waypoint-66465f7777-d5xwd" 
-dst.namespace="httpbin" dst.identity="spiffe://cluster.local/ns/httpbin/sa/waypoint" 
-direction="outbound" bytes_sent=0 bytes_recv=0 duration="0ms"
-error="http status: 429 Too Many Requests"
+2025-06-06T05:48:08.499364Z     error   access  connection complete
+  src.addr=10.42.0.14:52486 src.workload="curl-5d7946555f-ts24c"
+  src.namespace="httpbin" src.identity="spiffe://cluster.local/ns/httpbin/sa/curl"
+  dst.addr=10.42.0.18:15008 dst.hbone_addr=10.43.9.128:8000
+  dst.service="httpbin.httpbin.svc.cluster.local" dst.workload="waypoint-66465f7777-d5xwd"
+  dst.namespace="httpbin" dst.identity="spiffe://cluster.local/ns/httpbin/sa/waypoint"
+  direction="outbound" bytes_sent=0 bytes_recv=0 duration="0ms"
+  error="http status: 429 Too Many Requests"
 ```
