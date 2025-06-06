@@ -182,7 +182,7 @@ We need to apply one final change.
 ## Retrofit the EnvoyFilter spec
 
 In sidecar mode the EnvoyFilter targeted the service via the `workloadSelector` field.
-In ambient mode, the EnvoyFilter must reference the waypoint via the `targetRefs` field.
+In ambient mode, the EnvoyFilter must reference the service with the `targetRefs` field.
 
 Here is a revised envoy filter for ambient:
 
