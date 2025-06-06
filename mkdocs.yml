@@ -1,6 +1,6 @@
 site_name: EnvoyFilters in Ambient Mesh
-site_url: https://eitansuez.github.io/ambient-envoyfilters
-repo_url: https://github.com/eitansuez/ambient-envoyfilters
+site_url: https://eitansuez.github.io/envoyfilter-ambient
+repo_url: https://github.com/eitansuez/envoyfilter-ambient
 theme:
   name: material
   features:
